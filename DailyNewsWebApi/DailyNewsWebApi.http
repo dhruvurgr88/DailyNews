@@ -1,0 +1,6 @@
+@DailyNewsWebApi_HostAddress = http://localhost:5280
+
+GET {{DailyNewsWebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

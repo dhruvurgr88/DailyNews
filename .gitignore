@@ -1,0 +1,29 @@
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio cache
+.vs/
+
+# Logs
+*.log
+
+# Database files
+*.mdf
+*.ldf
+
+# Publish folder
+publish/
+
+# Rider
+.idea/
+
+# Other
+*.dbmdl
