@@ -27,3 +27,5 @@ publish/
 
 # Other
 *.dbmdl
+
+git remote set-url origin https://github.com/dhruvurgr88/DailyNews.git
