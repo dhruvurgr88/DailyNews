@@ -51,12 +51,24 @@ namespace DailyNewsWebApi.Controllers
         }
 
         // Add comment to article
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> AddComment(int articleId, [FromBody] string text)
+        public class CommentRequest
         {
-            var userEmail = User.Identity?.Name;
-            var comment = await _userService.AddCommentAsync(articleId, userEmail!, text);
+            public string Text { get; set; } = string.Empty;
+            public string email { get; set; } = string.Empty;
+        }
+
+        [HttpPost]
+        
+        public async Task<IActionResult> AddComment(int articleId, [FromBody] CommentRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Text))
+                return BadRequest("Comment text cannot be empty.");
+
+            var userEmail = request.email;
+            if (userEmail == null)
+                return Unauthorized();
+
+            var comment = await _userService.AddCommentAsync(articleId, userEmail, request.Text);
             return Ok(comment);
         }
 
@@ -113,12 +125,33 @@ namespace DailyNewsWebApi.Controllers
 
             return Ok("Article approved successfully");
         }
-       
-        [HttpPut("RejectArticle")]
+
+        // Add a new article
+        [HttpPost()]
+        // optional, remove if not needed
+        public async Task<IActionResult> AddArticle([FromBody] Article article)
+        {
+            try
+            {
+                if (article == null)
+                    return BadRequest("Invalid article data.");
+
+                var created = await _articleService.AddArticleAsync(article);
+                return Ok(created);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            }
+        }
+
+        [HttpPut()]
         public async Task<IActionResult> RejectArticle(int articleId)
         {
-            Boolean status = _articleService.RejectArticle(articleId);
-            if (!status) return BadRequest(status);
+            var result = await _articleService.RejectArticleAsync(articleId);
+            if (!result)
+                return NotFound($"Article with ID {articleId} not found");
+
             return Ok(new { message = "Article rejected successfully" });
         }
 

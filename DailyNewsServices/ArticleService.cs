@@ -97,5 +97,29 @@ namespace DailyNewsServices
             return true;
         }
 
+        public async Task<Article> AddArticleAsync(Article article)
+        {
+            article.CreatedDate = DateTime.UtcNow;
+            article.Status = "Pending"; // default status
+
+            _context.Articles.Add(article);
+            await _context.SaveChangesAsync();
+            return article;
+        }
+
+        public async Task<bool> RejectArticleAsync(int articleId)
+        {
+            var article = await _context.Articles.FindAsync(articleId);
+            if (article == null)
+                return false;
+
+            article.Status = "Rejected";
+            article.ModifiedDate = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+
     }
 }

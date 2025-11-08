@@ -24,8 +24,8 @@ public partial class Article
 
     public bool IsPremium { get; set; }
     [JsonIgnore]
+    public virtual User? AuthorEmailNavigation { get; set; } // <-- make nullable
 
-    public virtual User AuthorEmailNavigation { get; set; } = null!;
     [JsonIgnore]
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
