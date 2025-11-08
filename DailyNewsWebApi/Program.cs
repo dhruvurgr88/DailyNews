@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using DailyNewsDb;
+using DailyNewsDb.Modelss;
 
 namespace DailyNewsWebApi
 {
@@ -14,7 +14,7 @@ namespace DailyNewsWebApi
             var builder = WebApplication.CreateBuilder(args);
 
             // ✅ Database connection
-            builder.Services.AddDbContext<DailyNewsDbContext>(options =>
+            builder.Services.AddDbContext<DailyNewsDb.DailyNewsDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DailyNewsDb")));
 
             // ✅ CORS setup (ALLOW BOTH localhost + GitHub Pages + Render)
@@ -40,7 +40,7 @@ namespace DailyNewsWebApi
 
             builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<ArticleService>();
-            builder.Services.AddScoped<DailyNewsDbContext>();
+            builder.Services.AddScoped<DailyNewsDb.DailyNewsDbContext>();
 
             // ✅ JWT Authentication setup
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
